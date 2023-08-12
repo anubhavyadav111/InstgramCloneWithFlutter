@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:instagram_clone/Screens/widgets/text_field_input.dart';
+import 'package:instagram_clone/resouces/auth_method.dart';
 import 'package:instagram_clone/utils/colors.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -139,7 +140,15 @@ class _SignupScreenState extends State<SignupScreen> {
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(4)))),
         child: ElevatedButton(
-          onPressed: () {},
+          onPressed: () async {
+            String res = await AuthMethods().signUpUser(
+              email: _emailController.text,
+              password: _passwordController.text,
+              username: _usernameController.text,
+              bio: _bioController.text,
+            );
+            print(res);
+          },
           child: Text("Sign up"),
         ),
       ),
