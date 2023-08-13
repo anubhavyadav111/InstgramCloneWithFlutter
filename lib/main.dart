@@ -1,11 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:instagram_clone/Screens/loginscreen.dart';
 import 'package:instagram_clone/Screens/signup_screen.dart';
-import 'package:instagram_clone/responsive/web_screen_layout.dart';
 import 'package:instagram_clone/utils/colors.dart';
-
-import 'Screens/loginscreen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -45,7 +43,7 @@ class MyApp extends StatelessWidget {
       // ),
       theme: ThemeData.dark()
           .copyWith(scaffoldBackgroundColor: mobileBackgroundColor),
-      home: const SignupScreen(),
+      home: const LoginScreen(),
     );
   }
 }
