@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:instagram_clone/Screens/signup_screen.dart';
 import 'package:instagram_clone/Screens/widgets/text_field_input.dart';
 import 'package:instagram_clone/utils/colors.dart';
 import 'package:instagram_clone/utils/utils.dart';
-
 import '../resouces/auth_method.dart';
+import '../responsive/mobile_screen_layout.dart';
+import '../responsive/responsive_layout_screen.dart';
+import '../responsive/web_screen_layout.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -25,6 +28,11 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
+  void navigatorToSignup() {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => const SignupScreen()));
+  }
+
   void loginUser() async {
     setState(() {
       _isloading = true;
@@ -35,6 +43,18 @@ class _LoginScreenState extends State<LoginScreen> {
     );
     if (res == "success") {
       //
+      //   Navigator.of(context).pushReplacement(
+      //       MaterialPageRoute(builder: (context) => HomeScreen()));
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(builder: (context) => const HomeScreen()),
+      // );
+
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (context) => const ResponsiveLayout(
+                mobileScreenLayout: MobileScreenLayout(),
+                WebScreenLayout: WebScreenLayout(),
+              )));
     } else {
       showSnackBar(res, context);
     }
@@ -136,7 +156,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   minimumSize: Size(50, 30),
                   tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   alignment: Alignment.centerLeft),
-              onPressed: () {},
+              onPressed: () {
+                navigatorToSignup();
+              },
               child: const Text.rich(TextSpan(children: <TextSpan>[
                 TextSpan(text: "Don't have an account?"),
                 TextSpan(

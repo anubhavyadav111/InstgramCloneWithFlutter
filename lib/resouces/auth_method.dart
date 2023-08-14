@@ -1,13 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:instagram_clone/resouces/storage_methods.dart';
+import 'package:instagram_clone/models/user.dart' as model;
 
 class AuthMethods {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  Future<model.User> getUserDetails() async {
+    User currentUser = _auth.currentUser!;
+
+    DocumentSnapshot snap =
+        await _firestore.collection('users').doc(currentUser.uid).get();
+    return model.User.fromSnap(snap);
+  }
 
   // sign up user
 
@@ -26,6 +33,7 @@ class AuthMethods {
           username.isNotEmpty ||
           bio.isNotEmpty ||
           file != null) {
+        // little change intial it is null i change it into false
         UserCredential cred = await _auth.createUserWithEmailAndPassword(
           email: email,
           password: password,
@@ -38,15 +46,26 @@ class AuthMethods {
 
         //Add user to our database
 
-        await _firestore.collection('users').doc(cred.user!.uid).set({
-          'username': username,
-          'uid': cred.user!.uid,
-          'email': email,
-          'bio': bio,
-          'followers': [],
-          'following': [],
-          'photUrl': photoUrl,
-        });
+        model.User user = model.User(
+          username: username,
+          uid: cred.user!.uid,
+          email: email,
+          bio: bio,
+          followers: [],
+          following: [],
+          photoUrl: photoUrl,
+        );
+
+        await _firestore.collection('users').doc(cred.user!.uid).set(
+              user.toJson(),
+              // 'username': username,
+              // 'uid': cred.user!.uid,
+              // 'email': email,
+              // 'bio': bio,
+              // 'followers': [],
+              // 'following': [],
+              // 'photUrl': photoUrl,
+            );
         res = "succes";
       }
     } catch (err) {
@@ -67,8 +86,17 @@ class AuthMethods {
         await _auth.signInWithEmailAndPassword(
             email: email, password: password);
         res = "success";
+      } else {
+        res = "Please enter all the fields";
       }
-    } catch (err) {
+    }
+    // on FirebaseAuthException catch(e){
+    //   if(e.code == 'user-not-found'){  // add more thing with this anubhav add in the future
+
+    //   }
+    // }
+
+    catch (err) {
       res = err.toString();
     }
     return res;

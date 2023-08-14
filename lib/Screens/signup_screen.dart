@@ -2,10 +2,15 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:instagram_clone/Screens/loginscreen.dart';
 import 'package:instagram_clone/Screens/widgets/text_field_input.dart';
 import 'package:instagram_clone/resouces/auth_method.dart';
 import 'package:instagram_clone/utils/colors.dart';
 import 'package:instagram_clone/utils/utils.dart';
+
+import '../responsive/mobile_screen_layout.dart';
+import '../responsive/responsive_layout_screen.dart';
+import '../responsive/web_screen_layout.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -20,7 +25,7 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _bioController = TextEditingController();
   Uint8List? _image;
-  bool _isLoading = false;
+ bool _isLoading = false;
 
   @override
   void dispose() {
@@ -38,6 +43,11 @@ class _SignupScreenState extends State<SignupScreen> {
     });
   }
 
+  void navigatorToLoginUp() {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => const LoginScreen()));
+  }
+
   void signUpUser() async {
     setState(() {
       _isLoading = true;
@@ -52,6 +62,12 @@ class _SignupScreenState extends State<SignupScreen> {
 
     if (res != 'success') {
       showSnackBar(res, context);
+    } else {
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => const ResponsiveLayout(
+                mobileScreenLayout: MobileScreenLayout(),
+                WebScreenLayout: WebScreenLayout(),
+              )));
     }
     setState(() {
       _isLoading = false;
@@ -189,47 +205,43 @@ class _SignupScreenState extends State<SignupScreen> {
                 file: _image!);
             print(res);
           },
-          child:  Text("Sign up"),
+          child: Text("Sign up"),
         ),
       ),
-    
- 
-  
-    // Container(
-    //   height: 45,
-    //   width: double.infinity,
-    //   decoration: const ShapeDecoration(
-    //       shape: RoundedRectangleBorder(
-    //           borderRadius: BorderRadius.all(Radius.circular(4)))),
-    //   child: ElevatedButton(
-    //     onPressed: () async {
-    //       // Your sign-up logic
-    //       // Set _isLoading to true to display the CircularProgressIndicator
-    //       setState(() {
-    //         _isLoading = true;
-    //       });
-    //       String res = await AuthMethods().signUpUser(
-    //           email: _emailController.text,
-    //           password: _passwordController.text,
-    //           username: _usernameController.text,
-    //           bio: _bioController.text,
-    //           file: _image!);
-    //       print(res);
-    //       // Set _isLoading back to false when the process is complete
-    //       setState(() {
-    //         _isLoading = false;
-    //       });
-    //     },
-    //     child: Text("Sign up"),
-    //   ),
-    // ),
-    // // Show CircularProgressIndicator when _isLoading is true
-    // if (_isLoading)
-    //   CircularProgressIndicator(
-    //     color: Colors.white,
-    //   ),
-  
 
+      // Container(
+      //   height: 45,
+      //   width: double.infinity,
+      //   decoration: const ShapeDecoration(
+      //       shape: RoundedRectangleBorder(
+      //           borderRadius: BorderRadius.all(Radius.circular(4)))),
+      //   child: ElevatedButton(
+      //     onPressed: () async {
+      //       // Your sign-up logic
+      //       // Set _isLoading to true to display the CircularProgressIndicator
+      //       setState(() {
+      //         _isLoading = true;
+      //       });
+      //       String res = await AuthMethods().signUpUser(
+      //           email: _emailController.text,
+      //           password: _passwordController.text,
+      //           username: _usernameController.text,
+      //           bio: _bioController.text,
+      //           file: _image!);
+      //       print(res);
+      //       // Set _isLoading back to false when the process is complete
+      //       setState(() {
+      //         _isLoading = false;
+      //       });
+      //     },
+      //     child: Text("Sign up"),
+      //   ),
+      // ),
+      // // Show CircularProgressIndicator when _isLoading is true
+      // if (_isLoading)
+      //   CircularProgressIndicator(
+      //     color: Colors.white,
+      //   ),
 
       const SizedBox(
         height: 12,
@@ -248,7 +260,9 @@ class _SignupScreenState extends State<SignupScreen> {
                   minimumSize: Size(50, 30),
                   tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   alignment: Alignment.centerLeft),
-              onPressed: () {},
+              onPressed: () {
+                navigatorToLoginUp();
+              },
               child: const Text.rich(TextSpan(children: <TextSpan>[
                 TextSpan(text: "Already have an account? "),
                 TextSpan(
