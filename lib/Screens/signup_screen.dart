@@ -25,7 +25,7 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _bioController = TextEditingController();
   Uint8List? _image;
- bool _isLoading = false;
+  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -61,7 +61,7 @@ class _SignupScreenState extends State<SignupScreen> {
     );
 
     if (res != 'success') {
-      showSnackBar(res, context);
+      showSnackBar(context, res);
     } else {
       Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => const ResponsiveLayout(

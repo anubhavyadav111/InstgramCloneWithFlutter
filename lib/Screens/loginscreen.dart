@@ -56,7 +56,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 WebScreenLayout: WebScreenLayout(),
               )));
     } else {
-      showSnackBar(res, context);
+      showSnackBar(context, res);
     }
     setState(() {
       _isloading = false;
